@@ -20,30 +20,42 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // Put all source code that uses React in the same chunk as React
+          // This ensures React is available when our code executes
+          if (id.includes('src/i18n')) {
+            return 'vendor';
+          }
           if (id.includes('node_modules')) {
-            // React core - must load first
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('scheduler')) {
-              return 'vendor';
-            }
-            // All React-dependent packages go in vendor to ensure React loads first
+            // Put ALL React-related packages in vendor to ensure React loads first
+            // This includes React core and all React-dependent packages
             if (
               id.includes('react') || 
-              id.includes('@tanstack/react-query') ||
+              id.includes('@tanstack') ||
               id.includes('@vercel/analytics') ||
-              id.includes('react-router')
+              id.includes('@radix-ui') ||
+              id.includes('next-themes')
             ) {
               return 'vendor';
             }
-            // Radix UI components
-            if (id.includes('@radix-ui')) {
-              return 'ui';
+            // Only truly non-React packages go to vendor-other
+            // Common non-React packages: date-fns, zod, clsx, tailwind-merge, etc.
+            if (
+              id.includes('date-fns') ||
+              id.includes('zod') ||
+              id.includes('clsx') ||
+              id.includes('tailwind-merge') ||
+              id.includes('class-variance-authority') ||
+              id.includes('cmdk') ||
+              id.includes('input-otp') ||
+              id.includes('vaul') ||
+              id.includes('embla-carousel-core') ||
+              id.includes('recharts') ||
+              id.includes('sonner')
+            ) {
+              return 'vendor-other';
             }
-            // Other utilities
-            if (id.includes('lucide-react') || id.includes('date-fns')) {
-              return 'utils';
-            }
-            // Everything else (non-React dependencies)
-            return 'vendor-other';
+            // If unsure, put it in vendor to be safe
+            return 'vendor';
           }
         },
       },
