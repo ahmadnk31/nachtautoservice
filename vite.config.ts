@@ -20,29 +20,38 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Vendor chunk for React
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
+            // React core - must load first
+            if (id.includes('react/') || id.includes('react-dom/') || id.includes('scheduler')) {
               return 'vendor';
             }
-            // Router chunk
-            if (id.includes('react-router')) {
-              return 'router';
+            // All React-dependent packages go in vendor to ensure React loads first
+            if (
+              id.includes('react') || 
+              id.includes('@tanstack/react-query') ||
+              id.includes('@vercel/analytics') ||
+              id.includes('react-router')
+            ) {
+              return 'vendor';
             }
-            // Radix UI components chunk
+            // Radix UI components
             if (id.includes('@radix-ui')) {
               return 'ui';
             }
-            // Other large dependencies
+            // Other utilities
             if (id.includes('lucide-react') || id.includes('date-fns')) {
               return 'utils';
             }
-            // Everything else from node_modules
+            // Everything else (non-React dependencies)
             return 'vendor-other';
           }
         },
       },
     },
     chunkSizeWarningLimit: 1000,
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true,
+    },
   },
 }));
