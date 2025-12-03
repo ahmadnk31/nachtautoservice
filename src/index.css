@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&family=Chakra+Petch:wght@500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design system: all colors in HSL, fonts and motion tokens defined here. */
+
+@layer base {
+  :root {
+    /* Core palette – night garage in Gent */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 47% 10%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 222 84% 56%; /* Neon blauw */
+    --primary-foreground: 222 100% 6%;
+
+    --secondary: 262 84% 62%; /* Paars accent */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 30% 18%;
+    --muted-foreground: 216 20% 72%;
+
+    --accent: 188 80% 52%; /* Turquoise gloed */
+    --accent-foreground: 222 100% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 36% 22%;
+    --input: 222 36% 22%;
+    --ring: 222 84% 56%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar (not heavily used but themed to match) */
+    --sidebar-background: 222 47% 4%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 222 84% 56%;
+    --sidebar-primary-foreground: 222 100% 6%;
+    --sidebar-accent: 262 84% 62%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 222 36% 22%;
+    --sidebar-ring: 222 84% 56%;
+
+    /* Typography */
+    --font-sans: "Urbanist", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-display: "Chakra Petch", system-ui, sans-serif;
+
+    /* Gradients & shadows */
+    --hero-gradient-from: 222 84% 14%;
+    --hero-gradient-to: 262 84% 18%;
+    --surface-elevated: 222 32% 14%;
+    --shadow-soft-color: 222 84% 40%;
+  }
+
+  .dark {
+    /* Keep dark mode close to base but slightly higher contrast */
+    --background: 222 47% 4%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 222 47% 6%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 222 84% 60%;
+    --primary-foreground: 222 100% 6%;
+
+    --secondary: 262 84% 66%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 30% 18%;
+    --muted-foreground: 216 20% 72%;
+
+    --accent: 188 80% 56%;
+    --accent-foreground: 222 100% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 36% 22%;
+    --input: 222 36% 22%;
+    --ring: 222 84% 60%;
+
+    --sidebar-background: 222 47% 2%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 222 84% 60%;
+    --sidebar-primary-foreground: 222 100% 6%;
+    --sidebar-accent: 262 84% 66%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 222 36% 22%;
+    --sidebar-ring: 222 84% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    background-image: radial-gradient(circle at top left, hsl(var(--hero-gradient-from)) 0, transparent 55%),
+      radial-gradient(circle at bottom right, hsl(var(--hero-gradient-to)) 0, transparent 55%);
+    /* Performance: use scroll instead of fixed on mobile */
+    background-attachment: scroll;
+  }
+  
+  @media (min-width: 768px) {
+    body {
+      background-attachment: fixed;
+    }
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    @apply tracking-tight;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+}
